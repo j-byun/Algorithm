@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -19,12 +18,14 @@ import java.util.Scanner;
  * 1. 두 개의 재료를 뽑는 조합을 만들자.
  * 2. 두 재료의 합이 M이 되면 카운트를 세어주자.
  * 2-1. 재귀 호출 횟수를 줄이기 위해, 재료 선택시 합이 M이 넘어간다면 해당 가지는 호출하지 말자.
+ * => 메모리 30792KB, 시간 1036ms
  * 
- * 풀이2 - 정렬/투포인터
+ * 풀이2 - 정렬
  * 1. 재료를 번호 순서대로 (편의상 오름차순으로) 정렬하자.
  * 2. 재료 하나를 선택하고, 다른 재료들을 모두 확인해보면서 현재 재료와의 번호 합이 M이 되는 재료가 있다면 카운트를 세어주자.
  * 2-1. 재료를 번호 순서대로 정렬했으니, 탐색 시간을 줄이기 위해 합쳐서 M이 넘어간다면 탐색을 종료하자.
  * 2-2. 같은 번호의 재료가 여러 개 일 수 있으니, 합쳐서 M이 되는 재료를 하나 찾았다고 바로 끝내지는 말자.
+ * => 메모리 31528KB, 시간 500ms
  */
 
 public class Main {
@@ -70,9 +71,15 @@ public class Main {
 	*/
 	
 	
-	// 풀이2 - 정렬/투포인터
+	// 풀이2 - 정렬
 	
+	// 1. num배열을 정렬 메서드의 파라미터로 들고다니니까 메모리 초과 에러 발생
+	// => static으로 만들어서 재귀 호출 시 메모리를 줄여주자
+	// 2. tmp배열을 merge 메서드 안에서 계속 새로 생성해주니까 메모리 초과 에러 발생
+	// => 어차피 필요한 부분만 인덱스 포인터로 가르킬거니까 얘도 static으로 만들어서 메모리를 줄여주자
+	//		=> 1+2로 메모리 초과 에러 해결!
 	static int[] num, tmp;
+	
 	public static void mergeSort(int start, int end) {
 		
 		// 더 이상 쪼갤 수 없으면 반환
@@ -138,6 +145,7 @@ public class Main {
 		
 		int count = 0; // 두 재료를 합쳐서 M이 되는 경우를 세어줄 변수
 		
+		/*
 		for (int in1 = 0; in1 < N; in1++) {
 			for (int in2 = in1 + 1; in2 < N; in2++) {
 				// 재료는 하나씩만 존재하니까 똑같은 재료 두 개는 고려하면 안되고,
@@ -151,6 +159,23 @@ public class Main {
 				// 오름차순 정렬해줬기 때문
 				// for문 하나를 벗어나서 다음 in1을 확인하자
 				if (num[in1] + num[in2] > M) break;
+			}
+		}
+		*/
+		
+		int left = 0;
+		int right = N - 1;
+		
+		while (left < right) {
+			int sum = num[left] + num[right];
+			
+			if (sum == M) {
+				count++;
+				left++;
+			} else if (sum < M) {
+				left++;
+			} else {
+				right--;
 			}
 		}
 		
