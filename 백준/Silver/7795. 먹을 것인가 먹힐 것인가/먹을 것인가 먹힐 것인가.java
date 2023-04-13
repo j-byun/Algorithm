@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * @author jihye.byun
@@ -17,7 +18,7 @@ import java.util.Scanner;
  * 풀이 - 투포인터
  * 1. A와 B를 각각 오름차순으로 정렬하자.
  * 2. A와 B를 작은  수 부터 확인하면서, 모든 A에 대해 확인해보자.
- * 2-1. 첫번째 A에 대해, B가 A보다 커지면 그 때의 B 포인터가 현재 A가 먹을 수 있는 먹이 개수이다.
+ * 2-1. 첫번째 A에 대해, B가 A보다 커지면 그 때의 B포인터가 현재 A가 먹을 수 있는 먹이 개수이다.
  * 2-2. 다음 A를 확인하면, 이전 A보다 크기가 커졌으니가 B포인터를 2-1에서 멈춘 위치부터만 확인해주면 된다.
  */
 
@@ -36,13 +37,16 @@ public class Main {
 			int[] b = new int[M]; // B의 수들을 저장할 배열 공간
 			
 			// A의 수들을 입력받자
+			sc.nextLine();
+			StringTokenizer st = new StringTokenizer(sc.nextLine());
 			for (int idx = 0; idx < N; idx++) {
-				a[idx] = sc.nextInt();
+				a[idx] = Integer.parseInt(st.nextToken());
 			}
 			
 			// B의 수들을 입력받자
+			st = new StringTokenizer(sc.nextLine());
 			for (int idx = 0; idx < M; idx++) {
-				b[idx] = sc.nextInt();
+				b[idx] = Integer.parseInt(st.nextToken());
 			}
 			
 			// A와 B를 오름차순 정렬하자
