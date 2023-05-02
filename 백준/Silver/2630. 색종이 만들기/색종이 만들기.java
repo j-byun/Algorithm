@@ -106,9 +106,11 @@ public class Main {
 		paper = new int[N][N]; // 하얀색과 파란색으로 이루어진 전체 색종이 공간
 		
 		// 색종이 정보 입력받기
+		sc.nextLine();
 		for (int row = 0; row < N; row++) {
+			String[] line = sc.nextLine().split(" ");
 			for (int col = 0; col < N; col++) {
-				paper[row][col] = sc.nextInt();
+				paper[row][col] = Integer.parseInt(line[col]);
 			}
 		}
 		
