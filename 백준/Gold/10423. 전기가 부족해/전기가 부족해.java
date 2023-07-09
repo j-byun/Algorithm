@@ -1,6 +1,9 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * @author jihye.byun
@@ -47,27 +50,32 @@ public class Main {
 		}
 	}
 	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) throws IOException {
+		// BufferedReader와 StringTokenizer를 사용해 입력 시간을 단축시켜보자
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
 		
-		int N = sc.nextInt(); // 도시의 개수
-		int M = sc.nextInt(); // 설치 가능한 케이블의 수
-		int K = sc.nextInt(); // 발전소의 개수
+		st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken()); // 도시의 개수
+		int M = Integer.parseInt(st.nextToken()); // 설치 가능한 케이블의 수
+		int K = Integer.parseInt(st.nextToken()); // 발전소의 개수
 		
 		int[][] p = new int[N + 1][2]; // [0]에는 부모 도시의 번호, [1]에는 발전소 유무 저장
 		
 		// 발전소가 있는 도시 입력받기
+		st = new StringTokenizer(br.readLine());
 		for (int cnt = 0; cnt < K; cnt++) {
-			p[sc.nextInt()][1] = 1;
+			p[Integer.parseInt(st.nextToken())][1] = 1;
 		}
 		
 		int[][] edge = new int[M][3]; // 연결 케이블 정보 저장
 		
 		// 연결 케이블 정보 입력받기
 		for (int cnt = 0; cnt < M; cnt++) {
-			edge[cnt][0] = sc.nextInt();
-			edge[cnt][1] = sc.nextInt();
-			edge[cnt][2] = sc.nextInt();
+			st = new StringTokenizer(br.readLine());
+			edge[cnt][0] = Integer.parseInt(st.nextToken());
+			edge[cnt][1] = Integer.parseInt(st.nextToken());
+			edge[cnt][2] = Integer.parseInt(st.nextToken());
 		}
 		
 		// 케이블 정보를 연결 비용 오름차순으로 정렬하기
