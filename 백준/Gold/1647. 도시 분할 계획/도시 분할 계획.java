@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 /**
@@ -51,7 +52,8 @@ public class Main {
     	int M = Integer.parseInt(st.nextToken()); // 길의 개수
     	
     	int[] parent = new int[N + 1]; // 부모 노드 번호를 저장할 배열 공간
-    	int[][] edge = new int[M][3]; // 두 집을 연결하는 길의 정보를 저장할 배열 공간
+    	PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[2] - o2[2]); // 두 집을 연결하는 길의 정보를 저장할 배열 공간
+    	// 길은 유지비 오름차순으로 정렬된다
     	
     	// makeset
     	for (int idx = 0; idx <= N; idx++) {
@@ -61,21 +63,18 @@ public class Main {
     	// 길 정보 입력받기
     	for (int idx = 0; idx < M; idx++) {
     		st = new StringTokenizer(br.readLine());
-    		edge[idx][0] = Integer.parseInt(st.nextToken());
-    		edge[idx][1] = Integer.parseInt(st.nextToken());
-    		edge[idx][2] = Integer.parseInt(st.nextToken());
+    		pq.add(new int[] {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())});
     	}
-    	
-    	// 길을 유지비 오름차순으로 정렬하자
-    	Arrays.sort(edge, (o1, o2) -> o1[2] - o2[2]);
     	
     	int sum = 0; // 전체 길의 유지비 합을 저장할 변수
     	int count = 0; // 연결시킨 길의 개수를 세어줄 변수
     	
     	// 유지비가 적은 길부터 차례대로 확인해보자
     	for (int idx = 0; idx < M; idx++) {
-    		int px = findset(edge[idx][0], parent);
-    		int py = findset(edge[idx][1], parent);
+    		int[] cur = pq.poll();
+    		
+    		int px = findset(cur[0], parent);
+    		int py = findset(cur[1], parent);
     		
     		// 길로 연결된 두 집이 이미 연결되어 있는지 확인하자
     		// 두 집이 이미 연결되었다면 다음 길을 확인하자
@@ -86,7 +85,7 @@ public class Main {
     		// 두 집이 아직 연결되지 않았다면 연결시키자
     		union(px, py, parent);
     		// 현재 길의 유지비를 전체 길 유지비에 더해주자
-    		sum += edge[idx][2];
+    		sum += cur[2];
     		// 연결시킨 길의 개수를 +1 해주자
     		count++;
     	}
