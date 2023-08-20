@@ -34,17 +34,16 @@ public class Main {
 	
 	private static void bfs(int startRow, int startCol) {
 		Queue<Coo> queue = new ArrayDeque<>();
-		queue.add(new Coo(startRow, startCol));
 		int area = 0;
+		queue.add(new Coo(startRow, startCol));
+		paper[startRow][startCol] = 9;
+		area++;
 		
 		while (!queue.isEmpty()) {
 			Coo cur = queue.poll();
 			
-			if (paper[cur.row][cur.col] != 1)
-				continue;
-			
-			paper[cur.row][cur.col] = 9; 
-			area++;
+//			if (paper[cur.row][cur.col] != 1)
+//				continue;
 			
 			for (int d = 0; d < 4; d++) {
 				int nr = cur.row + dr[d];
@@ -53,6 +52,8 @@ public class Main {
 				if (nr < 0 || nr >= n || nc < 0 || nc >= m) continue;
 				if (paper[nr][nc] != 1) continue;
 				queue.add(new Coo(nr, nc));
+				paper[nr][nc] = 9; 
+				area++;
 			}
 		}
 		
