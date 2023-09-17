@@ -26,7 +26,6 @@ public class Main {
     	
     	int n = sc.nextInt();
     	int start = 0;
-    	boolean flag = true;
     	
     	Stack<Integer> stack = new Stack<>();
     	StringBuilder sb = new StringBuilder();
@@ -40,12 +39,12 @@ public class Main {
     		}
     		
     		if (stack.pop() != cur) {
-    			flag = false;
-    			break;
+    			System.out.println("NO");
+    			return;
     		}
     		sb.append("-").append("\n");
     	}
     
-    	System.out.println((!flag)? "NO" : sb);
+    	System.out.println(sb);
     }
 }
