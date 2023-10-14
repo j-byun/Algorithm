@@ -52,6 +52,7 @@ public class Main {
 	static int[] dc = new int[] {0, 1, 0, -1};
 	
     public static void main(String[] args) throws IOException {
+    	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     	int gameCount = 0; // 현재 게임 수를 세어줄 변수
     	
     	while (true) {
@@ -64,8 +65,11 @@ public class Main {
     		minRupee = new int[N][N]; // 각 칸에 도달하기 위한 최소 루피를 저장할 배열
     		input(); // 동굴 각 칸의 정보 입력받기
     		
-    		System.out.println("Problem "+ gameCount + ": " + move()); // 링크가 잃을 수 밖에 없는 최소 금액 찾기
+    		bw.write("Problem ");
+    		bw.write(gameCount + ": ");
+    		bw.write(move() + "\n"); // 링크가 잃을 수 밖에 없는 최소 금액 찾기
     	}
+    	bw.flush();
     }
     
     static void input() throws IOException {
