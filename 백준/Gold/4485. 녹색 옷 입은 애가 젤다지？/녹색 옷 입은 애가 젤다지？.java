@@ -27,6 +27,20 @@ import java.io.*;
 
 public class Main {
 	
+	static class Point implements Comparable<Point>{
+		int row, col, rupee;
+		public Point(int row, int col, int rupee) {
+			this.row = row;
+			this.col = col;
+			this.rupee = rupee;
+		}
+		@Override
+		public int compareTo(Point o) {
+			// TODO Auto-generated method stub
+			return this.rupee - o.rupee;
+		}
+	}
+	
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringTokenizer st;
 	
@@ -36,15 +50,6 @@ public class Main {
 	
 	static int[] dr = new int[] {-1, 0, 1, 0};
 	static int[] dc = new int[] {0, 1, 0, -1};
-	
-	static class Point {
-		int row, col, rupee;
-		public Point(int row, int col, int rupee) {
-			this.row = row;
-			this.col = col;
-			this.rupee = rupee;
-		}
-	}
 	
     public static void main(String[] args) throws IOException {
     	int gameCount = 0; // 현재 게임 수를 세어줄 변수
@@ -74,11 +79,11 @@ public class Main {
     }
     
     static int move() {
-    	Queue<Point> queue = new ArrayDeque<>();
-    	queue.add(new Point(0, 0, cave[0][0]));
+    	PriorityQueue<Point> pq = new PriorityQueue<>();
+    	pq.add(new Point(0, 0, cave[0][0]));
     	
-    	while (!queue.isEmpty()) {
-    		Point cur = queue.poll();
+    	while (!pq.isEmpty()) {
+    		Point cur = pq.poll();
     		
     		for (int d = 0; d < 4; d++) {
     			int nr = cur.row + dr[d];
@@ -87,7 +92,7 @@ public class Main {
     			if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
     			if (minRupee[nr][nc] <= cur.rupee + cave[nr][nc]) continue;
     			minRupee[nr][nc] = cur.rupee + cave[nr][nc];
-    			queue.add(new Point(nr, nc, minRupee[nr][nc]));
+    			pq.add(new Point(nr, nc, minRupee[nr][nc]));
     		}
     	}
     	
