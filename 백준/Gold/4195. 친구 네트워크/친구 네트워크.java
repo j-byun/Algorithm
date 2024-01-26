@@ -30,7 +30,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
 
         int T = Integer.parseInt(st.nextToken()); // 테스트케이스 개수 입력받기
         
@@ -64,17 +64,17 @@ public class Main {
 
                 // 둘이 이미 친구라면? root친구의 rank 출력
                 if (p1 == p2) {
-                    bw.write(rank.get(p1) + "\n");
+                    sb.append(rank.get(p1)).append("\n");
                     continue;
                 }
 
                 // 둘이 아직 친구가 아니라면? union하고 root친구의 rank 출력
                 union(p1, p2);
-                bw.write(rank.get(find(p1)) + "\n");
+                sb.append(rank.get(find(p1))).append("\n");
             }
         }
 
-        bw.flush();
+        System.out.println(sb.toString());
     }
 
     static int getFriendsIndex(String name) {
