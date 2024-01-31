@@ -33,11 +33,14 @@ public class Main {
         
         /*
         1. dp 풀이
-         */
+        메모리 : 12480 KB
+        시간 : 128 ms
+        Java 8 기준
+
         int[] arr = new int[N]; // 각 병사들의 전투력을 저장할 배열
         int[] dp = new int[N]; // i번째 병사까지의 LDS값을 저장할 dp배열
         int lds = 0; // LDS의 길이를 저장할 변수
-        
+
         // 병사들의 전투력 입력받기
         st = new StringTokenizer(br.readLine());
         for (int idx = 0; idx < N; idx++) {
@@ -57,5 +60,55 @@ public class Main {
 
         // LDS를 만들기 위해 열외시킬 병사 수 출력
         System.out.println(N - lds);
+        */
+        
+        /*
+        2. 이분 탐색 풀이
+         */
+
+        int[] lds = new int[N + 1]; // 길이가 i인 LDS의 마지막 값 중 최댓값을 저장할 배열
+        int length = 0; // 현재 LDS의 길이를 저장할 변수
+        lds[length] = Integer.MAX_VALUE; // 길이가 0일 때의 값 초기화
+        
+        // 병사들의 전투력 입력받기
+        st = new StringTokenizer(br.readLine());
+        for (int idx = 0; idx < N; idx++) {
+            int num = Integer.parseInt(st.nextToken());
+            
+            // lds 배열에 저장된 마지막 값보다 작다면? 다음 칸에 저장
+            if (lds[length] > num) {
+                lds[++length] = num;
+                continue;
+            }
+            
+            // lds 배열의 최대~최소값 사이의 값이라면?
+            // 이분 탐색으로 들어갈 칸 찾아서 저장
+            lds[binarySearch(lds, 1, length, num)] = num;
+        }
+
+        // LDS를 만들기 위해 열외시킬 병사 수 출력
+        System.out.println(N - length);
+    }
+
+    static int binarySearch(int[] arr, int start, int end, int num) {
+
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            int midValue = arr[mid];
+
+            if (midValue == num) {
+                return mid;
+            }
+
+            if (midValue < num) {
+                end = mid - 1;
+            }
+
+            if (midValue > num) {
+                start = mid + 1;
+            }
+        }
+
+        return start;
     }
 }
