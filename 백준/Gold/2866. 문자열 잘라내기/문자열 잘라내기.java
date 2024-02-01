@@ -26,46 +26,80 @@ import java.io.*;
  * 4. 열의 개수만큼 문자열을 저장할 String 배열을 만들어서 테이블의 문자열을 저장
  * 5. HashSet을 만들고, 열의 개수만큼 문자열을 순회하며 substring해서 문자열을 자르고 다시 set에 저장
  * 6. 5번 과정에서 set에 중복 값 검사 후 중복이 발견될 경우 그 전 인덱스 출력
+ * => 메모리 초과! 이분탐색으로 확인을 줄이자
  */
 
 public class Main {
+
+    static int C;
+    static String[] words;
+    
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int R = Integer.parseInt(st.nextToken()); // 행의 개수 입력받기
-        int C = Integer.parseInt(st.nextToken()); // 열의 개수 입력받기
+        C = Integer.parseInt(st.nextToken()); // 열의 개수 입력받기
 
-        String[] words = new String[C];// 테이블의 문자를 열 기준으로 읽어서 저장할 배열 만들기
+        char[][] table = new char[R][C]; // 테이블 정보를 저장할 배열
+        words = new String[C];// 테이블의 문자를 열 기준으로 읽어서 저장할 배열 만들기
 
         // 테이블 정보 입력받기
         for (int row = 0; row < R; row++) {
             String line = br.readLine();
             for (int col = 0; col < C; col++) {
-                if (row == 0)
-                    words[col] = "";
-                words[col] += line.charAt(col);
+                table[row][col] = line.charAt(col);
             }
         }
 
-        // col개의 문자들을 0번부터~R-1번부터 시작하는 문자로 잘라서 set에 추가하기
-        for (int row = 1; row < R; row++) {
-            HashSet<String> set = new HashSet<>(); // 자른 문자열들을 중복없이 저장할 set 생성
+        // 테이블의 문자들을 열 기준으로 읽어서 저장하기
+        for (int col = 0; col < C; col++) {
+            StringBuilder sb = new StringBuilder();
+            for (int row = 0; row < R; row++) {
+                sb.append(table[row][col]);
+            }
+            words[col] = sb.toString();
+        }
 
-            for (int col = 0; col < C; col++) {
-                String cur = words[col].substring(row);
+        // 이분 탐색으로 기준 행 정하기
+        System.out.println(binarySearch(0, R - 1));
+    }
 
-                // 중복된 문자가 있으면 해당 row턴 끝내지 않고 종료
-                if (set.contains(cur)) {
-                    System.out.println(row - 1);
-                    return;
-                }
+    static int binarySearch(int start, int end) {
 
-                // 중복된 문자가 없으면 set에 추가
-                set.add(cur);
+        while (start <= end) {
+            int mid = (start + end) / 2;
+
+            // 중간 행을 기준으로 중복 여부 확인
+            boolean duplicate = checkDuplicate(mid);
+
+            // 중복이 있으면? 더 위를 기준으로 확인
+            if (duplicate) {
+                end = mid - 1;
+            }
+
+            // 중복이 없으면? 더 아래를 기준으로 확인
+            if (!duplicate) {
+                start = mid + 1;
             }
         }
 
-        System.out.println(R - 1);
+        return end;
+    }
+
+    static boolean checkDuplicate(int index) {
+        HashSet<String> set = new HashSet<>();
+
+        for (int col = 0; col < C; col++) {
+            String cur = words[col].substring(index);
+
+            if (set.contains(cur)) {
+                return true;
+            }
+
+            set.add(cur);
+        }
+
+        return false;
     }
 }
