@@ -61,6 +61,7 @@ public class Main {
     static int N;
     static PriorityQueue<Edge> pq;
     static List<Node>[] adjList;
+    static int[] parents;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -108,9 +109,9 @@ public class Main {
 
     static int kruskal() {
 
-        int[] parents = new int[N + 1]; // 부모 노드를 저장할 배열 생성
+        parents = new int[N + 1]; // 부모 노드를 저장할 배열 생성
 
-        makeSet(parents); // 모든 노드에 대해 자기 자신이 부모가 되도록 초기화
+        makeSet(); // 모든 노드에 대해 자기 자신이 부모가 되도록 초기화
 
         int count = 0; // MST에 사용한 간선의 개수를 세어줄 변수 생성
         int cost = 0; // MST에 추가되는 비용을 저장할 변수 생성
@@ -119,8 +120,8 @@ public class Main {
             Edge cur = pq.poll();
 
             // 간선으로 연결된 두 노드의 부모 찾기
-            int px = findSet(cur.start, parents);
-            int py = findSet(cur.end, parents);
+            int px = findSet(cur.start);
+            int py = findSet(cur.end);
             
             // 두 노드의 부모가 같다면 == 이미 연결되어있다면 더 이상 연결 X : 사이클 발생
             if (px == py) {
@@ -128,7 +129,7 @@ public class Main {
             }
             
             // 두 노드의 부모가 다르다면 간선으로 연결하자!
-            union(px, py, parents);
+            union(px, py);
             count++; // 연결한 간선 수 1개 추가
             cost += cur.cost; // 현재 간선의 비용 추가
 
@@ -146,18 +147,18 @@ public class Main {
         return cost;
     }
 
-    static void makeSet(int[] parents) {
+    static void makeSet() {
         for (int idx = 0; idx < parents.length; idx++) {
             parents[idx] = idx;
         }
     }
 
-    static int findSet(int x, int[] parents) {
+    static int findSet(int x) {
         if (parents[x] == x) return parents[x];
-        return parents[x] = findSet(parents[x], parents);
+        return parents[x] = findSet(parents[x]);
     }
 
-    static void union(int x, int y, int[] parents) {
+    static void union(int x, int y) {
         if (x < y) {
             parents[y] = x;
         }
