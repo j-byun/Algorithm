@@ -37,6 +37,8 @@ public class Main {
         }
 
         // 수를 2개 이상 쓰는 경우 확인
+        // dp[i][j] = dp[i-1][0]~dp[i-1][j]까지의 합
+        // 그렇다면 dp[i][j+1] = dp[i][j]에 j까지 누적합이 저장돼있으니 dp[i-1][j+1]만 더해주면 된다
         for (int count = 2; count <= K; count++) {
             for (int sum = 0; sum <= N; sum++) {
                 if (sum == 0) {
