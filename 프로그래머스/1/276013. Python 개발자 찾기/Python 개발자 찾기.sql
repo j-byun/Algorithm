@@ -1,0 +1,4 @@
+SELECT I.ID, I.EMAIL, I.FIRST_NAME, I.LAST_NAME
+    FROM DEVELOPER_INFOS I
+    WHERE (I.SKILL_1 = 'Python' || I.SKILL_2 = 'Python' || I.SKILL_3 = 'Python')
+    ORDER BY I.ID ASC
