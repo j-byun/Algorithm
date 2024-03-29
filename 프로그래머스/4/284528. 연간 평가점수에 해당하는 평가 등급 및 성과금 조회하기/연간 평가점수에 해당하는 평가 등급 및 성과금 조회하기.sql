@@ -1,0 +1,36 @@
+# SELECT DISTINCT E.EMP_NO
+#     , E.EMP_NAME
+#     , CASE
+#         WHEN G.SCORE >= 96 THEN 'S'
+#         WHEN G.SCORE >= 90 THEN 'A'
+#         WHEN G.SCORE >= 80 THEN 'B'
+#         ELSE 'C'
+#         END AS GRADE
+# FROM HR_EMPLOYEES E, HR_GRADE G
+# WHERE E.EMP_NO = G.EMP_NO
+# GROUP BY E.EMP_NO, E.EMP_NAME, G.SCORE
+# ORDER BY 1
+SELECT E.EMP_NO
+    , E.EMP_NAME
+    , CASE
+        WHEN G.TOTAL_SCORE >= 96 THEN 'S'
+        WHEN G.TOTAL_SCORE >= 90 THEN 'A'
+        WHEN G.TOTAL_SCORE >= 80 THEN 'B'
+        ELSE 'C'
+        END AS GRADE
+    , CASE
+        WHEN G.TOTAL_SCORE >= 96 THEN (0.2 * E.SAL)
+        WHEN G.TOTAL_SCORE >= 90 THEN (0.15 * E.SAL)
+        WHEN G.TOTAL_SCORE >= 80 THEN (0.1 * E.SAL)
+        ELSE (0 * E.SAL)
+        END AS BONUS
+FROM HR_EMPLOYEES E,
+    (
+    SELECT AVG(SCORE) AS TOTAL_SCORE
+        , EMP_NO
+    FROM HR_GRADE
+    GROUP BY EMP_NO   
+    ) G
+WHERE E.EMP_NO = G.EMP_NO
+ORDER BY E.EMP_NO ASC
+        
