@@ -25,7 +25,7 @@ public class Main {
     static void dfs(int depth) {
     	if (depth == M) {
     		for (int i : arr) {
-    			sb.append(i + " ");
+    			sb.append(i).append(" ");
     		}
     		sb.append("\n");
     		return;
